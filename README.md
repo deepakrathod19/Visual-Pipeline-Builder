@@ -1,70 +1,246 @@
-# Getting Started with Create React App
+# 🚀 Visual Pipeline Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack drag-and-drop application for building and validating AI/data processing pipelines with DAG (Directed Acyclic Graph) validation.
 
-## Available Scripts
+**Tech Stack:** React + React Flow + FastAPI + Python
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 📋 Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Build visual pipelines by dragging nodes (Input, Text, LLM, Output) onto a canvas and connecting them. The backend validates the pipeline structure to ensure it's a valid DAG without circular dependencies.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Key Capabilities:**
+- 🎨 Drag-and-drop node editor with React Flow
+- 🔗 Visual connection of nodes with automatic edge tracking
+- ✅ Backend DAG validation using cycle detection
+- 📊 Real-time feedback on pipeline structure validity
+- 🧩 Reusable BaseNode abstraction for clean code
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## ⚙️ Tech Stack
 
-### `npm run build`
+| Layer | Technologies |
+|-------|--------------|
+| **Frontend** | React, React Flow, Zustand, JavaScript (ES6), HTML/CSS |
+| **Backend** | Python 3.13+, FastAPI, Pydantic, Uvicorn, NetworkX |
+| **Architecture** | REST API, Component-based UI, Graph algorithms |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 📁 Project Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
+visual-pipeline-builder/
+├── frontend/
+│   ├── src/
+│   │   ├── App.js
+│   │   ├── store.js (Zustand)
+│   │   ├── ui.js
+│   │   ├── toolbar.js
+│   │   ├── submit.js
+│   │   └── nodes/
+│   │       ├── BaseNode.jsx
+│   │       ├── inputNode.js
+│   │       ├── textNode.js
+│   │       ├── llmNode.js
+│   │       └── outputNode.js
+│   └── package.json
+│
+└── backend/
+    ├── main.py
+    └── requirements.txt
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Quick Start
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Backend (FastAPI)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+pip install fastapi uvicorn pydantic networkx python-multipart
+python -m uvicorn main:app --reload
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Backend:** http://127.0.0.1:8000
 
-## Learn More
+### Frontend (React)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+cd frontend
+npm install
+npm start
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**Frontend:** http://localhost:3000
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 💡 How to Use
 
-### Analyzing the Bundle Size
+1. **Drag nodes** from the toolbar: Input → Text → LLM → Output
+2. **Connect nodes** by clicking handles and dragging connections
+3. **Edit text node** with template variables (e.g., `{{input_1}}`)
+4. **Click Submit** to validate pipeline
+5. **View results:** Node count, edge count, and DAG validity
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Valid Pipeline Flow:**
+```
+Input → Text → LLM → Output
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🧩 Features
 
-### Advanced Configuration
+### Frontend Features
+✅ Drag-and-drop canvas with React Flow  
+✅ 4 custom node types with reusable BaseNode abstraction  
+✅ Real-time edge connections with handles  
+✅ Auto-resizing text inputs  
+✅ Zustand state management  
+✅ Clean, responsive UI design  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Backend Features
+✅ REST API endpoint: `POST /pipelines/parse`  
+✅ Node and edge counting  
+✅ DAG validation using DFS cycle detection  
+✅ Structured JSON response  
+✅ Pydantic input validation  
+✅ CORS support  
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 📤 API Response
 
-### `npm run build` fails to minify
+**Request:**
+```json
+{
+  "nodes": [{"id": "1", "type": "input"}, ...],
+  "edges": [{"source": "1", "target": "2"}, ...]
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**Response:**
+```json
+{
+  "num_nodes": 4,
+  "num_edges": 3,
+  "is_dag": true
+}
+```
+
+---
+
+## 🧠 Architecture
+
+```
+Frontend (React + React Flow)
+         ↓
+    Zustand Store (State)
+         ↓
+    Canvas UI + Toolbar
+         ↓
+    POST /pipelines/parse
+         ↓
+Backend (FastAPI)
+    - Parse & validate input
+    - Build graph structure
+    - Count nodes/edges
+    - Check for cycles (DFS)
+    - Return validation result
+```
+
+---
+
+## 🔍 DAG Validation Logic
+
+Uses **Depth-First Search (DFS)** to detect cycles:
+- If a cycle exists → `is_dag: false`
+- If no cycles → `is_dag: true` (valid pipeline)
+
+**Time Complexity:** O(V + E) where V = nodes, E = edges
+
+---
+
+## 📦 Download & Run
+
+**Option 1: Clone from GitHub**
+```bash
+git clone https://github.com/deepakrathod19/visual-pipeline-builder.git
+cd visual-pipeline-builder
+```
+
+**Option 2: Download ZIP**
+📥 [Google Drive - Project ZIP](https://drive.google.com/drive/folders/1G4_sV62wMqs2D01I9IgnzNK0Nr8M4dSY?usp=sharing)
+
+---
+
+## 🎯 Key Learnings
+
+- **Frontend:** Reusable UI abstractions, complex state management with Zustand, React Flow integration
+- **Backend:** REST API design, Pydantic validation, graph algorithms (cycle detection)
+- **Full-Stack:** API integration, CORS handling, async requests, error handling
+- **System Design:** Scalable architecture, algorithm optimization, UI/UX problem solving
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] Save/load pipelines from database
+- [ ] Pipeline execution engine with logging
+- [ ] Node configuration panels
+- [ ] Undo/redo functionality
+- [ ] Conditional branching nodes (if/else)
+- [ ] Loop/iteration nodes
+- [ ] User authentication and sharing
+- [ ] Advanced monitoring and analytics
+
+---
+
+## 🔧 Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| Backend won't start | Check Python 3.13+, run `pip install -r requirements.txt` |
+| Frontend blank | Ensure backend is running on http://127.0.0.1:8000 |
+| Nodes won't connect | Drag from right handle to left handle, check console |
+| CORS error | Verify FastAPI has CORS enabled |
+| Port in use | Backend: `--port 8001`, Frontend: `PORT=3001 npm start` |
+
+---
+
+## 👨‍💻 Author
+
+**Deepak Rathod**
+
+- 🔗 GitHub: [@deepakrathod19](https://github.com/deepakrathod19)
+- 💼 LinkedIn: [@deeprathod1](https://linkedin.com/in/deeprathod1)
+- 📧 Email: rad82377@gmail.com
+
+---
+
+## 📄 License
+
+MIT License - Open source and free to use
+
+---
+
+## ⭐ Project Highlights
+
+✅ Full-stack React + FastAPI integration  
+✅ Graph algorithm implementation (DAG validation)  
+✅ Complex UI state management  
+✅ Production-ready code structure  
+✅ Comprehensive documentation  
+
+**Built to demonstrate:** Full-stack engineering, system design thinking, and problem-solving abilities.
+
+---
+
+*Last Updated: January 2026 | Version 1.0.0*
